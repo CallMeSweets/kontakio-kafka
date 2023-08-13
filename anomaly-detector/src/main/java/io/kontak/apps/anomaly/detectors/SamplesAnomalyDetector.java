@@ -10,11 +10,11 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
+import static io.kontak.apps.anomaly.model.AggregatedTemperature.SAMPLES_NUMBER_TO_HOLD;
+
 @Component
 public class SamplesAnomalyDetector implements AnomalyDetector {
 
-    @Value("${anomaly.detector.samples.number}")
-    private int samplesNumber;
     @Value("${anomaly.detector.threshold}")
     private double threshold;
 
@@ -23,7 +23,7 @@ public class SamplesAnomalyDetector implements AnomalyDetector {
 
     @Override
     public Optional<Anomaly> apply(List<TemperatureReading> temperatureReadings) {
-        if(temperatureReadings.size() < samplesNumber) {
+        if(temperatureReadings.size() < SAMPLES_NUMBER_TO_HOLD) {
             return Optional.empty();
         }
 
@@ -44,7 +44,7 @@ public class SamplesAnomalyDetector implements AnomalyDetector {
                 }
             }
 
-            double avgOfOthers = sumOfOthers / (samplesNumber - 1);
+            double avgOfOthers = sumOfOthers / (SAMPLES_NUMBER_TO_HOLD - 1);
             if (temp.temperature() - avgOfOthers >= threshold) {
                 return temp;
             }

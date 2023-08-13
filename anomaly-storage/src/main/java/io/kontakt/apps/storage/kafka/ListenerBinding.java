@@ -6,7 +6,7 @@ import org.springframework.cloud.stream.annotation.Input;
 
 public interface ListenerBinding {
 
-    @Input("anomalyDetectorProcessor-in-0")
+//    @Input("anomalyDetectorProcessor-in-0")
     KStream<String, Anomaly> inputChannel();
 
 }

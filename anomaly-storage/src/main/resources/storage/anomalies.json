@@ -1,0 +1,36 @@
+PUT _index_template/temperature_anomalies_template
+{
+  "index_patterns": ["temperature-*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 1
+    },
+    "mappings": {
+      "properties": {
+        "routing": {
+          "type": "keyword",
+          "store": false
+        },
+        "_clazz": {
+          "type": "keyword",
+          "store": false
+        },
+        "temperature": {
+          "type": "double"
+        },
+        "roomId": {
+          "type": "keyword"
+        },
+        "thermometerId": {
+          "type": "keyword"
+        },
+        "timestamp": {
+          "type": "long"
+        }
+      }
+    }
+  }
+}
+
+PUT temperature-anomalies

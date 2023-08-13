@@ -1,29 +1,24 @@
 package io.kontakt.apps.storage.kafka;
 
 import io.kontak.apps.event.Anomaly;
-import io.kontakt.apps.storage.storage.DataStorage;
+import io.kontakt.apps.storage.storage.source.DataStorage;
 import org.apache.kafka.streams.kstream.*;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import java.util.function.Consumer;
 
 
-@Service
-@EnableBinding(ListenerBinding.class)
-public class AnomalyTemperatureListener {
+public class AnomalyTemperatureListener implements Consumer<KStream<String, Anomaly>> {
 
-    @Resource
-    private DataStorage elasticSearchStorage;
+    private final DataStorage elasticSearchStorage;
 
-    @StreamListener("anomalyDetectorProcessor-in-0")
-    public void process(KStream<String, Anomaly> events) {
+    public AnomalyTemperatureListener(DataStorage elasticSearchStorage) {
+        this.elasticSearchStorage = elasticSearchStorage;
+    }
+
+    @Override
+    public void accept(KStream<String, Anomaly> events) {
         events
-                .foreach((key, value) -> {
-                    elasticSearchStorage.store(value);
-                    System.out.println("Anomaly detected: " + value);
-                });
+                .foreach((key, anomaly) -> elasticSearchStorage.store(anomaly));
     }
 }
 

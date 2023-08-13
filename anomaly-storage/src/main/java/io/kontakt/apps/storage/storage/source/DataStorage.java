@@ -1,4 +1,4 @@
-package io.kontakt.apps.storage.storage;
+package io.kontakt.apps.storage.storage.source;
 
 import io.kontak.apps.event.Anomaly;
 

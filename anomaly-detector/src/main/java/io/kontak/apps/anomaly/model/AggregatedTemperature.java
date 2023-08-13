@@ -9,7 +9,7 @@ import java.util.List;
 
 public record AggregatedTemperature(String key, List<TemperatureReading> temperatures) {
 
-    private static final int SAMPLES_NUMBER_TO_HOLD = 10;
+    public static final int SAMPLES_NUMBER_TO_HOLD = 10;
 
     static Logger logger = LoggerFactory.getLogger(AggregatedTemperature.class);
 
